@@ -21,49 +21,47 @@ class Object
 end
 
 class BigDecimal
-    def nice_inspect( x1 = nil, x2 = nil )
-        "%.2f" % [ self ]
-    end
+  def nice_inspect( x1 = nil, x2 = nil )
+    "%.2f" % [ self ]
+  end
 end
 
 class Array
-    def nice_inspect( join_string = ",\n", indentation = 0 )
-        outer_indentation(indentation) +
-        "[\n" +
-            collect { |e|
-                "    " * indentation + e.nice_inspect( join_string, indentation + 1 )
-            }.join( join_string ) +
-        "\n" +
-        outer_indentation(indentation) +
-        "]"
-    end
+  def nice_inspect( join_string = ",\n", indentation = 0 )
+    outer_indentation(indentation) + "[\n" +
+      collect { |e|
+        "    " * indentation + e.nice_inspect( join_string, indentation + 1 )
+      }.join( join_string ) +
+      "\n" +
+      outer_indentation(indentation) +
+    "]"
+  end
 end
 
 class Date
-    def nice_inspect( join_string = ",\n", indentation = 0 )
-        "'#{to_s}'"
-    end
+  def nice_inspect( join_string = ",\n", indentation = 0 )
+    "'#{to_s}'"
+  end
 end
 
 class Hash
-    def nice_inspect( join_string = ",\n", indentation = 0 )
-        outer_indentation(indentation) +
-        "{\n" +
-            keys.sort_by { |k|
-                k.respond_to?( :<=> ) ? k : k.to_s
-            }.collect { |k|
-                v = self[ k ]
-                inner_indentation(indentation) +
-                k.inspect + " => " + v.nice_inspect( join_string, indentation + 1 )
-            }.join( join_string ) +
-        "\n" +
-        outer_indentation(indentation) +
-        "}"
-    end
+  def nice_inspect( join_string = ",\n", indentation = 0 )
+    outer_indentation(indentation) + "{\n" +
+      keys.sort_by { |k|
+        k.respond_to?( :<=> ) ? k : k.to_s
+      }.collect { |k|
+        v = self[ k ]
+        inner_indentation(indentation) +
+        k.inspect + " => " + v.nice_inspect( join_string, indentation + 1 )
+      }.join( join_string ) +
+      "\n" +
+      outer_indentation(indentation) +
+    "}"
+  end
 end
 
 class String
-    def nice_inspect( *args )
-      inspect
-    end
+  def nice_inspect( *args )
+    inspect
+  end
 end
