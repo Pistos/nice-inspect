@@ -7,17 +7,13 @@ class Object
   end
   
   def nice_inspect( join_string = ",\n", indentation = 0 )
-    if instance_variables.empty?
+    ivars = instance_variables
+    if ivars.empty?
       inspect
     else
-      
-      var_str = instance_variables.map { |var|
+      var_str = ivars.map { |var|
         val = instance_variable_get( var )
-        "#{inner_indentation(indentation)}#{var}=" + (
-          val.respond_to?( :nice_inspect ) ?
-          val.nice_inspect( join_string, indentation + 1 ) :
-          val.inspect
-        )
+        "#{inner_indentation(indentation)}#{var}=" + val.nice_inspect( join_string, indentation + 1 )
       }.join( join_string )
       outer_indentation(indentation) + "#<#{self.class}\n" + var_str + "\n>"
     end
@@ -35,12 +31,7 @@ class Array
         outer_indentation(indentation) +
         "[\n" +
             collect { |e|
-                "    " * indentation +
-                (
-                    e.respond_to?( :nice_inspect ) ?
-                    e.nice_inspect( join_string, indentation + 1 ) :
-                    e.inspect
-                )
+                "    " * indentation + e.nice_inspect( join_string, indentation + 1 )
             }.join( join_string ) +
         "\n" +
         outer_indentation(indentation) +
@@ -63,11 +54,7 @@ class Hash
             }.collect { |k|
                 v = self[ k ]
                 inner_indentation(indentation) +
-                k.inspect + " => " + (
-                    v.respond_to?( :nice_inspect ) ?
-                    v.nice_inspect( join_string, indentation + 1 ) :
-                    v.inspect
-                )
+                k.inspect + " => " + v.nice_inspect( join_string, indentation + 1 )
             }.join( join_string ) +
         "\n" +
         outer_indentation(indentation) +
