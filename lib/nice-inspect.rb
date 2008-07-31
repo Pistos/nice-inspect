@@ -13,7 +13,7 @@ class Object
     else
       var_str = ivars.map { |var|
         val = instance_variable_get( var )
-        "#{inner_indentation(indentation)}#{var}=" + val.nice_inspect( join_string, indentation + 1 )
+        "#{inner_indentation(indentation)}#{var}=" + val.nice_inspect( join_string, indentation + 1 ).strip
       }.join( join_string )
       outer_indentation(indentation) + "#<#{self.class}\n" + var_str + "\n>"
     end
@@ -40,7 +40,7 @@ class Hash
       }.collect { |k|
         v = self[ k ]
         inner_indentation(indentation) +
-        k.inspect + " => " + v.nice_inspect( join_string, indentation + 1 )
+        k.inspect + " => " + v.nice_inspect( join_string, indentation + 1 ).strip
       }.join( join_string ) +
       "\n" +
       outer_indentation(indentation) +
