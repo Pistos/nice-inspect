@@ -20,12 +20,6 @@ class Object
   end
 end
 
-class BigDecimal
-  def nice_inspect( x1 = nil, x2 = nil )
-    "%.2f" % [ self ]
-  end
-end
-
 class Array
   def nice_inspect( join_string = ",\n", indentation = 0 )
     outer_indentation(indentation) + "[\n" +
@@ -35,12 +29,6 @@ class Array
       "\n" +
       outer_indentation(indentation) +
     "]"
-  end
-end
-
-class Date
-  def nice_inspect( join_string = ",\n", indentation = 0 )
-    "'#{to_s}'"
   end
 end
 
@@ -59,3 +47,16 @@ class Hash
     "}"
   end
 end
+
+class Date
+  def nice_inspect( join_string = ",\n", indentation = 0 )
+    "'#{to_s}'"
+  end
+end
+
+class BigDecimal
+  def nice_inspect( x1 = nil, x2 = nil )
+    "%.2f" % [ self ]
+  end
+end
+
