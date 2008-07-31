@@ -59,9 +59,3 @@ class Hash
     "}"
   end
 end
-
-class String
-  def nice_inspect( *args )
-    inspect
-  end
-end
