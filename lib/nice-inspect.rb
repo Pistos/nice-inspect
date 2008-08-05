@@ -15,16 +15,16 @@ class Object
         val = instance_variable_get( var )
         "#{inner_indentation(indentation)}#{var} = " + val.nice_inspect( join_string, indentation + 1 ).strip
       }.join( join_string )
-      outer_indentation(indentation) + "#<#{self.class}\n" + var_str + "\n>"
+      "#<#{self.class}\n" + var_str + "\n>"
     end
   end
 end
 
 class Array
   def nice_inspect( join_string = ",\n", indentation = 0 )
-    outer_indentation(indentation) + "[\n" +
+    "[\n" +
       collect { |e|
-        "    " * indentation + e.nice_inspect( join_string, indentation + 1 )
+        "    " * indentation + e.nice_inspect( join_string, indentation + 1 ).strip
       }.join( join_string ) +
       "\n" +
       outer_indentation(indentation) +
@@ -34,7 +34,7 @@ end
 
 class Hash
   def nice_inspect( join_string = ",\n", indentation = 0 )
-    outer_indentation(indentation) + "{\n" +
+    "{\n" +
       keys.sort_by { |k|
         k.respond_to?( :<=> ) ? k : k.to_s
       }.collect { |k|
