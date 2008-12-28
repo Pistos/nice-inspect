@@ -5,15 +5,17 @@ class Object
   def inner_indentation( indentation_level )
     "  " * ( indentation_level + 1 )
   end
-  
-  def nice_inspect( join_string = ",\n", indentation = 0 )
+
+  def nice_inspect( join_string = ",\n", indentation = 0, visited = Hash.new )
+    return "#<#{self.class}>" if visited[ self ]
+    visited[ self ] = true
     ivars = instance_variables
     if ivars.empty?
       inspect
     else
       var_str = ivars.map { |var|
         val = instance_variable_get( var )
-        "#{inner_indentation(indentation)}#{var} = " + val.nice_inspect( join_string, indentation + 1 ).strip
+        "#{inner_indentation(indentation)}#{var} = " + val.nice_inspect( join_string, indentation + 1, visited ).strip
       }.join( join_string )
       "#<#{self.class}\n" + var_str + "\n>"
     end
@@ -21,10 +23,12 @@ class Object
 end
 
 class Array
-  def nice_inspect( join_string = ",\n", indentation = 0 )
+  def nice_inspect( join_string = ",\n", indentation = 0, visited = Hash.new )
+    return "#<#{self.class}>" if visited[ self ]
+    visited[ self ] = true
     "[\n" +
       collect { |e|
-        "    " * indentation + e.nice_inspect( join_string, indentation + 1 ).strip
+        "    " * indentation + e.nice_inspect( join_string, indentation + 1, visited ).strip
       }.join( join_string ) +
       "\n" +
       outer_indentation(indentation) +
@@ -33,14 +37,16 @@ class Array
 end
 
 class Hash
-  def nice_inspect( join_string = ",\n", indentation = 0 )
+  def nice_inspect( join_string = ",\n", indentation = 0, visited = Hash.new )
+    return "#<#{self.class}>" if visited[ self ]
+    visited[ self ] = true
     "{\n" +
       keys.sort_by { |k|
         k.respond_to?( :<=> ) ? k : k.to_s
       }.collect { |k|
         v = self[ k ]
         inner_indentation(indentation) +
-        k.inspect + " => " + v.nice_inspect( join_string, indentation + 1 ).strip
+        k.inspect + " => " + v.nice_inspect( join_string, indentation + 1, visited ).strip
       }.join( join_string ) +
       "\n" +
       outer_indentation(indentation) +
