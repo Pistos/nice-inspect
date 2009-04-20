@@ -60,6 +60,7 @@ class Date
   end
 end
 
+require 'bigdecimal'
 class BigDecimal
   def nice_inspect( x1 = nil, x2 = nil, visited = Hash.new )
     "%.2f" % [ self ]
