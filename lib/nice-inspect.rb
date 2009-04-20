@@ -55,13 +55,13 @@ class Hash
 end
 
 class Date
-  def nice_inspect( join_string = ",\n", indentation = 0 )
+  def nice_inspect( join_string = ",\n", indentation = 0, visited = Hash.new )
     "'#{to_s}'"
   end
 end
 
 class BigDecimal
-  def nice_inspect( x1 = nil, x2 = nil )
+  def nice_inspect( x1 = nil, x2 = nil, visited = Hash.new )
     "%.2f" % [ self ]
   end
 end
