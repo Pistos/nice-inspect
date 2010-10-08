@@ -22,6 +22,24 @@ class Object
   end
 end
 
+class String
+  def nice_inspect( join_string = ",\n", indentation = 0, visited = Hash.new )
+    self.inspect
+  end
+end
+
+class Fixnum
+  def nice_inspect( join_string = ",\n", indentation = 0, visited = Hash.new )
+    self.inspect
+  end
+end
+
+class NilClass
+  def nice_inspect( join_string = ",\n", indentation = 0, visited = Hash.new )
+    "nil"
+  end
+end
+
 class Array
   def nice_inspect( join_string = ",\n", indentation = 0, visited = Hash.new )
     return "#<#{self.class}>" if visited[ self ]
